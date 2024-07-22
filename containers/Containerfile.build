@@ -1,0 +1,9 @@
+ARG BASE="localhost/gbadev-base"
+FROM ${BASE}
+
+# Compile game
+# /in and /out should be mounted as volumes
+ARG MAKEFLAGS=""
+ENV MAKEFLAGS=$MAKEFLAGS
+RUN cp -r /in/* /out/
+RUN . /etc/profile.d/devkit-env.sh && cd /out ; make clean && env MAKEFLAGS="${MAKEFLAGS}" make

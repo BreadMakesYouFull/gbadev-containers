@@ -1,0 +1,13 @@
+Assets:
+
+* basic-studio.blend by FnaX https://blendswap.com/blend/30270 CC-0 “No Rights Reserved” https://creativecommons.org/public-domain/cc0/
+
+* Gameboy Advance Cartridge (GBA Cart) STL by @Dave https://www.printables.com/model/190861-gameboy-advance-cartridge-gba-cart/files CC BY 4.0 - Share / Adapt by attribution https://creativecommons.org/licenses/by/4.0/
+
+* GBA Jam Logos and banners made by GBA Jam 2024 Organizers, licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
+
+* "JAM 2024" logo text font — Over Drive by [Graphic Arts Unit](https://www.graphicartsunit.com/gaupra/index.html)
+
+* [Font besciii](https://github.com/damianvila/font-bescii) (Damian Vila) [CC0 1.0 Universal license](https://creativecommons.org/publicdomain/zero/1.0/)
+
+* Other assets BreadMakesYouFull CC BY 4.0 https://creativecommons.org/licenses/by/4.0/deed.en

@@ -1,0 +1,141 @@
+ARG BASE_IMG=docker.io/debian:12.5-slim
+ARG DEVKITPRO_IMG=debian:docker.io/devkitpro/devkitarm
+
+FROM $DEVKITPRO_IMG AS devkitpro
+FROM $BASE_IMG AS base
+
+# Update
+# Install dependencies
+# Clear apt cache
+RUN apt-get update  && apt-get install --no-install-recommends -y \
+    bison \
+    build-essential \
+    clang-format \
+    clang-tidy \
+    cmake \
+    cpplint \
+    curl \
+    doxygen \
+    doxygen-gui \
+    ffmpeg \
+    gcc-arm-none-eabi \
+    git \
+    libedit-dev \
+    libelf-dev \
+    libjson-c-dev \
+    libsdl2-dev \
+    lua5.4 \
+    parallel \
+    python-is-python3 \
+    python3 \
+    python3-venv \
+    qtbase5-dev \
+    sqlite3 \
+    sudo \
+    vim \
+    wget \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+ARG MAKEFLAGS=""
+ENV MAKEFLAGS=$MAKEFLAGS
+
+# mgba - gba emulator : https://mgba.io/
+ARG MGBA=0.10.3
+RUN cd /opt ; \
+    git clone https://github.com/mgba-emu/mgba.git ; \
+    cd mgba ; \
+    git checkout -b gbadev $MGBA ; \
+    mkdir -p build ; \
+    cd build ; \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. ; \
+    make ; \
+    make install ;
+
+## devkitpro arm - gba development kit / toolchain : https://devkitpro.org/wiki/Getting_Started
+#
+# Install from immutable container image
+COPY --from=devkitpro /opt/devkitpro /opt/devkitpro
+COPY --from=devkitpro /etc/profile.d/devkit-env.sh /etc/profile.d/devkit-env.sh
+#
+# Alternatively install from binary via pacman: https://devkitpro.org/wiki/devkitPro_pacman
+#RUN cd /opt/ ; \
+#    wget https://apt.devkitpro.org/install-devkitpro-pacman ; \
+#    chmod +x ./install-devkitpro-pacman ; \
+#    yes | ./install-devkitpro-pacman ; \
+#    yes '' | dkp-pacman -S gba-dev ;
+#
+# It should be possible to lock to specific pacman versions too but it requires more work:
+# To query installed packages:
+# dkp-pacman -Qg gba-dev | cut -f2 -d' ' | xargs -I% dkp-pacman -Q % | tr ' ' '=' | tr '\n' ' '
+# To install specific versions:
+# dkp-pacman --noconfirm -S pkg-name=version
+#
+RUN echo '. /etc/profile.d/devkit-env.sh' >> ~/.bashrc ;
+
+# butano - modern c++ engine for gba dev : https://gvaliente.github.io/butano/
+ARG BUTANO=17.8.0
+RUN cd /opt ; \
+    git clone https://github.com/GValiente/butano.git ; \
+    cd butano ; \
+    git checkout -b gbadev $BUTANO ;
+
+# nim - systems programming language : https://nim-lang.org/
+ARG NIM=https://nim-lang.org/download/nim-2.0.8-linux_x64.tar.xz
+RUN cd /opt ; \
+    wget --no-verbose -O nim.tar.xz $NIM ; \
+    tar -xf nim.tar.xz  ; \
+    mv nim-* nim ; \
+    rm -rf nim.tar.xz ; \
+    ln -sf /opt/nim/bin/nim /usr/bin/nim ; \
+    ln -sf /opt/nim/bin/nimble /usr/bin/nimble ;
+
+# natu - toolkit for gbadev written in nim : https://natu.exelo.tl/
+ARG NATU=https://git.sr.ht/~exelotl/natu@0.2.1
+RUN cd /opt ;\
+    nimble install -y $NATU ;
+RUN cd /opt ;\
+    git clone https://git.sr.ht/~exelotl/natu-examples ; \
+    cd natu-examples/ ;
+
+# slate - pixel art : https://github.com/mitchcurtis/slate
+ARG SLATE=https://github.com/mitchcurtis/slate/releases/download/v0.9.0/Slate-v0.9.0-linux.tar.xz
+RUN cd /opt ; \
+    wget --no-verbose -O slate.tar.gz $SLATE ; \
+    tar -xf slate.tar.gz ; \
+    mv Slate-v* slate ; \
+    rm slate.tar.gz ; \
+    ln -s /opt/slate/Slate /usr/bin/slate ;
+# Slate GBA colour swatches
+COPY ["scripts/gba_swatches.py", "/opt/slate"]
+RUN /opt/slate/gba_swatches.py /opt/slate
+
+# gimp - image creation : https://www.gimp.org/
+RUN apt-get update ; apt-get install -y gimp ; rm -rf /var/lib/apt/lists/*
+COPY ["scripts/gimp_plugin_butano.py", "/lib/gimp/2.0/plug-ins/"]
+# Gimp 2.0 requires python2.7 for scripting
+RUN echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' >> /etc/apt/sources.list ; \
+    apt-get update ; \
+    apt-get install -y python2.7 ;
+RUN echo 'deb http://security.debian.org/debian-security buster/updates main' >> /etc/apt/sources.list ; \
+    apt-get update ; \
+    apt-get install -y  gimp-python; \
+    rm -rf /var/lib/apt/lists/* ;
+
+# bitmap post process - strip colour space and limit colours
+ARG PILLOW=2.2.2
+RUN mkdir -p /opt/pillow ; \
+    cd /opt/pillow ; \
+    python3 -m venv venv ; \
+    ./venv/bin/pip install pillow==${PILLOW}
+COPY ["scripts/bmp_post_process.py", "/usr/bin/bmp_post_process"]
+RUN sed -i 's|#!/usr/bin/env python|#!/opt/pillow/venv/bin/python3|' /usr/bin/bmp_post_process
+
+# bescii font - CC 1.0 bitmap font : https://github.com/damianvila/font-bescii
+RUN cd /opt ; \
+    git clone https://github.com/damianvila/font-bescii.git ; \
+    cd font-bescii ; \
+    git checkout -b gbadev v2.0 ;
+

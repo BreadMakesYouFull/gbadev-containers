@@ -1,0 +1,28 @@
+# Immutable package and environment controls
+
+# What builder to use, docker or podman
+BUILDER=podman
+
+# The base linux distribution to build with, may be frozen to a specific hash
+BASE_IMG=docker.io/debian:12.5-slim@sha256:67f3931ad8cb1967beec602d8c0506af1e37e8d73c2a0b38b181ec5d8560d395
+
+# The devkitpro build artifact to use, you may wish to read containers/Containerfile.base for an alternative method
+DEVKITPRO_IMG=docker.io/devkitpro/devkitarm:latest@sha256:c582c1e1e0c72649ea51fcc22ff5f8e5d7565d90fecbc862ce214b9e47f6087a
+
+# Butano git tag
+BUTANO=17.8.0
+
+# mgba git tag
+MGBA=0.10.3
+
+# Slate release
+SLATE=https://github.com/mitchcurtis/slate/releases/download/v0.9.0/Slate-v0.9.0-linux.tar.xz
+
+# Pillow (Python imaging library version)
+PILLOW=10.4.0
+
+# Nim
+NIM=https://nim-lang.org/download/nim-2.0.8-linux_x64.tar.xz
+
+# Natu
+NATU=https://git.sr.ht/~exelotl/natu@0.2.1

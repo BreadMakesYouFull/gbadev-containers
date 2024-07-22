@@ -1,0 +1,70 @@
+{
+    "swatch": {
+        "colours": [
+            {
+                "colour": "#000000",
+                "name": "gba_0_to_31(0,0,0)"
+            },
+            {
+                "colour": "#391880",
+                "name": "gba_0_to_31(7,3,1)"
+            },
+            {
+                "colour": "#ffe6ac",
+                "name": "gba_0_to_31(31,28,21)"
+            },
+            {
+                "colour": "#acb441",
+                "name": "gba_0_to_31(21,22,8)"
+            },
+            {
+                "colour": "#8bd531",
+                "name": "gba_0_to_31(17,26,6)"
+            },
+            {
+                "colour": "#9cee8b",
+                "name": "gba_0_to_31(19,29,17)"
+            },
+            {
+                "colour": "#80ff39",
+                "name": "gba_0_to_31(1,31,7)"
+            },
+            {
+                "colour": "#9cffd5",
+                "name": "gba_0_to_31(19,31,26)"
+            },
+            {
+                "colour": "#10fff6",
+                "name": "gba_0_to_31(2,31,30)"
+            },
+            {
+                "colour": "#5abdee",
+                "name": "gba_0_to_31(11,23,29)"
+            },
+            {
+                "colour": "#5a8bff",
+                "name": "gba_0_to_31(11,17,31)"
+            },
+            {
+                "colour": "#736ae6",
+                "name": "gba_0_to_31(14,13,28)"
+            },
+            {
+                "colour": "#bd94ee",
+                "name": "gba_0_to_31(23,18,29)"
+            },
+            {
+                "colour": "#a429bd",
+                "name": "gba_0_to_31(20,5,23)"
+            },
+            {
+                "colour": "#9c2083",
+                "name": "gba_0_to_31(19,4,16)"
+            },
+            {
+                "colour": "#390018",
+                "name": "gba_0_to_31(7,0,3)"
+            }
+        ]
+    }
+}

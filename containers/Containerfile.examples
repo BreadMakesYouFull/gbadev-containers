@@ -1,0 +1,21 @@
+ARG BASE="localhost/gbadev-base"
+FROM ${BASE}
+
+ARG MAKEFLAGS=""
+ENV MAKEFLAGS=$MAKEFLAGS
+
+# Compile examples
+
+# Devkitpro gba examples - BUG: https://github.com/devkitPro/gba-examples/issues/8
+# RUN . /etc/profile.d/devkit-env.sh ; \
+#    cd /opt/devkitpro/examples/gba ; \
+#    make || exit 0
+
+# Butano examples - https://gvaliente.github.io/butano/examples.html
+RUN . /etc/profile.d/devkit-env.sh ; \
+    cd /opt/butano/examples ; \
+    for d in *; do cd $d; make ; cd - ; done
+
+# Natu examples - https://git.sr.ht/~exelotl/natu-examples
+RUN cd /opt/natu-examples ; \
+    nim build_examples ;
