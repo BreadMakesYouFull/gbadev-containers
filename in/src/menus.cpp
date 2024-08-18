@@ -3,6 +3,7 @@
 #include "bn_blending.h"
 #include "bn_core.h"
 #include "bn_display.h"
+#include "bn_keypad.h"
 #include "bn_optional.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sound_handle.h"
@@ -11,11 +12,13 @@
 #include "bn_vector.h"
 
 // Assets
+#include "bn_regular_bg_items_bigbg.h"
 #include "bn_regular_bg_items_menu.h"
 #include "bn_regular_bg_items_menu_select_bg.h"
 #include "bn_regular_bg_items_splash1.h"
 #include "bn_regular_bg_items_splash2.h"
 #include "bn_regular_bg_items_whale.h"
+#include "bn_regular_bg_items_whale16.h"
 #include "bn_sound_items.h"
 
 // Project files
@@ -136,7 +139,8 @@ select (GameState &gameState)
     "< back",
     "Sprite test",
     "Font test",
-    "GBADEV slides"
+    "GBADEV slides",
+    "Explore"
   };
   gameState.text = text;
   drawText (gameState);
@@ -165,6 +169,9 @@ select (GameState &gameState)
       break;
     case 3:
       gameState.index = SLIDESHOW;
+      break;
+    case 4:
+      gameState.index = EXPLORE;
       break;
     default:
       gameState.index = SELECT;
@@ -293,6 +300,42 @@ info (GameState &gameState)
       [] (GameState &deltaGameState) -> GameState {
         deltaGameState = music (deltaGameState);
         keys (deltaGameState);
+        tick (deltaGameState);
+        return deltaGameState;
+      },
+      gameState, false);
+  // Set next game state
+  gameState.index = MENU;
+  return gameState;
+}
+
+GameState
+explore (GameState &gameState)
+{
+  // Draw BG
+  gameState.bgc = bn::color (0, 0, 0);
+  bn::bg_palettes::set_transparent_color (gameState.bgc);
+  gameState.bg1 = bn::regular_bg_items::bigbg.create_bg (0, 0);
+  gameState.bg2 = bn::regular_bg_items::whale16.create_bg (5, 42);
+  // Draw Text
+  bn::string_view text[] = { "Feel free to explore", "press START to exit" };
+  gameState.text = text;
+  gameState.textY = -64;
+  drawText (gameState);
+  // Loop
+  whileF (
+      predicateStartPressed,
+      [] (GameState &deltaGameState) -> GameState {
+        deltaGameState = music (deltaGameState);
+        keys (deltaGameState);
+        if (bn::keypad::left_held())  { deltaGameState.bg1->set_x ( deltaGameState.bg1->x() + 2); }
+        if (bn::keypad::right_held())  { deltaGameState.bg1->set_x ( deltaGameState.bg1->x() - 2); }
+        if (bn::keypad::up_held())  { deltaGameState.bg1->set_y ( deltaGameState.bg1->y() + 2); }
+        if (bn::keypad::down_held())  { deltaGameState.bg1->set_y ( deltaGameState.bg1->y() - 2); }
+        if (bn::keypad::left_held())  { deltaGameState.bg2->set_x ( deltaGameState.bg2->x() - 1); }
+        if (bn::keypad::right_held())  { deltaGameState.bg2->set_x ( deltaGameState.bg2->x() + 1); }
+        if (bn::keypad::up_held())  { deltaGameState.bg2->set_y ( deltaGameState.bg2->y() - 1); }
+        if (bn::keypad::down_held())  { deltaGameState.bg2->set_y ( deltaGameState.bg2->y() + 1); }
         tick (deltaGameState);
         return deltaGameState;
       },

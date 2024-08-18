@@ -29,11 +29,8 @@ main ()
   bn::sram::read (cartSramData);
   // Init music
   gameState.musicEnabled = 0;
-  if (cartSramData.music != 0)
-    {
-      gameState.musicEnabled = 1;
-      gameState.musicSample = 0;
-    }
+  gameState.musicEnabled = 0;
+  gameState.musicSample = 0;
   // Load progress
   gameState.progress = cartSramData.progress == -1 ? 0 : cartSramData.progress;
   // Main game loop

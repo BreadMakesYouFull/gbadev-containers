@@ -23,6 +23,8 @@ GameState settings (GameState &gameState);
 GameState info (GameState &gameState);
 /** Font test */
 GameState fontTest (GameState &gameState);
+/** Explore */
+GameState explore (GameState &gameState);
 
 } // namespace gbadev
 

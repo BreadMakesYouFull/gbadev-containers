@@ -318,7 +318,7 @@ slideshow (GameState &gameState)
 
   }
 
-  gameState.index = SPLASH;
+  gameState.index = EXPLORE;
   return gameState;
 
 }

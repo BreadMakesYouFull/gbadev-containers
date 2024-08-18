@@ -25,6 +25,7 @@ static const int SETTINGS = 104;
 static const int INFO = 105;
 static const int FONTTEST = 106;
 static const int SLIDESHOW = 107;
+static const int EXPLORE = 108;
 // 100 Addresses reserved for games
 // Note: only demo game and font test implemented in this example.
 static const int GAME = 1;
@@ -145,6 +146,7 @@ GameState settings (GameState &gameState);
 GameState info (GameState &gameState);
 GameState fontTest (GameState &gameState);
 GameState slideshow (GameState &gameState);
+GameState explore (GameState &gameState);
 
 /** Game index lookup array.
  *
@@ -161,6 +163,7 @@ static const bn::array<GameLoop, 128> GAMEINDEX = [] {
   gameloops[INFO] = info;
   gameloops[FONTTEST] = fontTest;
   gameloops[SLIDESHOW] = slideshow;
+  gameloops[EXPLORE] = explore;
   return gameloops;
 }();
 

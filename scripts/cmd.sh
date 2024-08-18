@@ -28,4 +28,4 @@ OUT="${OUT:-`pwd`/out}"
     -v "/run/user/$UID/pulse/native:/run/user/$UID/pulse/native" \
     --env "PULSE_SERVER=unix:/run/user/$UID/pulse/native" \
     -v "/run/user/$(id -u)/$WAYLAND_DISPLAY:/tmp/wayland-0:ro" \
-    ${GBADEV_CONTAINER_IMAGE:-gbadev} "${@}"
+    ${GBADEV_CONTAINER_IMAGE:-gbadev-base} "${@}"
