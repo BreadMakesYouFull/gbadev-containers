@@ -17,6 +17,7 @@ by BreadMakesYouFull
 ## Preview
 
 ![](./in/asset/gbadev_snapshot_256.jpg) ![](./in/asset/mockup_edit3.png)
+![](./in/asset/gbadev-containers-explore.gif)
 
 ## Requires
 
