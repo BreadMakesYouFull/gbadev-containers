@@ -10,7 +10,7 @@ BASE_IMG=docker.io/debian:12.5-slim@sha256:67f3931ad8cb1967beec602d8c0506af1e37e
 DEVKITPRO_IMG=docker.io/devkitpro/devkitarm:latest@sha256:c582c1e1e0c72649ea51fcc22ff5f8e5d7565d90fecbc862ce214b9e47f6087a
 
 # Butano git tag
-BUTANO=17.8.0
+BUTANO=17.9.0
 
 # mgba git tag
 MGBA=0.10.3
